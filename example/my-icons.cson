@@ -1,0 +1,32 @@
+name: 'my-font'
+path: './images/'
+glyphs:
+  play:
+    file: 'play-icon.svg'
+    unicode: '\uE001'
+    groups: [
+      'actions'
+      'my-player'
+    ]
+    description: 'starta a música'
+  pause:
+    file: 'pause-icon' # o '.svg' é opcional
+    groups: [
+      'actions',
+      'my-player'
+    ]
+    description: '''
+      A long description,
+      over one line
+    '''
+  stop:
+    # caso [[file]] não seja informado, será assumido o valor <icon-name>.svg
+    groups: [
+      'actions',
+      'my-player'
+    ]
+  replay:
+    groups: [
+      'actions',
+      'my-player'
+    ]
