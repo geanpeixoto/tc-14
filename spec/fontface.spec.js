@@ -1,6 +1,17 @@
 const FontFace = require('../src/fontface');
 
 describe('FontFace', () => {
+  it('#constructor', () => {
+    const font = new FontFace({
+      name: 'my-font',
+      glyphs: {
+        home: {},
+      },
+    });
+
+    expect(font.version).toEqual('1.0');
+  });
+
   describe('#static parseGlyphs', () => {
     it('##espera-se que converta objeto em array', () => {
       const glyph = {

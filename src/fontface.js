@@ -1,13 +1,19 @@
 const paths = require('path');
 const cson = require('./utils/cson');
 
+const VERSION_REGEXP = /^(\d+\.\d+)/g;
+
 class FontFace {
   constructor({
     name,
-    path = '.',
+    alias,
     glyphs,
+    path = '.',
+    version = '1.0.0',
   }) {
     this.name = name;
+    this.alias = alias;
+    this.version = version.match(VERSION_REGEXP)[0];
     this.glyphs = this.constructor.parseGlyphs(glyphs, path);
   }
 
@@ -16,7 +22,12 @@ class FontFace {
     const base = paths.dirname(filename);
 
     if (!data.name) {
-      data.name = /([^\/\\]+)\.cson?$/.exec(filename)[1];
+      console.warn('[ERROR] a propriedade {name} é obrigatória');
+      throw new Error('name is undefined');
+    }
+
+    if (!data.version) {
+      console.warn(`[WARNING] considere inserir {version} em sua fonte: ${filename}`);
     }
 
     data.path = paths.join(base, data.path);

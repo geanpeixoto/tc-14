@@ -13,7 +13,11 @@
     "eslint-plugin-import": "^2.0.1",
     "eslint-plugin-jsx-a11y": "^2.2.3",
     "eslint-plugin-react": "^6.4.1",
-    "jasmine-spec-reporter": "^2.7.0"
+    "jasmine-spec-reporter": "^2.7.0",
+    "svg2ttf": "^4.0.2",
+    "ttf2eot": "^2.0.0",
+    "ttf2woff": "^2.0.1",
+    "ttf2woff2": "^2.0.3"
   },
   "scripts": {
     "start": "node index.js",
