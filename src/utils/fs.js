@@ -7,10 +7,24 @@ function writeFile(filename, data) {
         throw err;
       }
       resolve();
-    })
-  })
+    });
+  });
+}
+
+function readFile(filename, options = {}) {
+  return new Promise((resolve) => {
+    fs.readFile(filename, Object.assign({
+      encoding: 'utf-8',
+    }, options), (err, data) => {
+      if (err) {
+        throw err;
+      }
+      resolve(data);
+    });
+  });
 }
 
 module.exports = {
   writeFile,
+  readFile,
 };

@@ -7,6 +7,7 @@ const TTFWriter = require('./writers/ttf-writer');
 const EOTWriter = require('./writers/eot-writer');
 const WOFFWriter = require('./writers/woff-writer');
 const WOFF2Writer = require('./writers/woff2-writer');
+const ExampleWriter = require('./writers/example-writer');
 
 class Writer {
 
@@ -15,8 +16,11 @@ class Writer {
   }
 
   write(path) {
+    const cssfolder = `${path}/css`;
     if (!fs.existsSync(path)) {
       fs.mkdirSync(path);
+    } else if (!fs.existsSync(cssfolder)) {
+      fs.mkdirSync(cssfolder);
     }
 
     const fonts = this.writeSVG(path)
@@ -32,8 +36,14 @@ class Writer {
 
     return Promise.all([
       this.writeCSS(path),
+      this.writeExample(path),
       fonts,
     ]);
+  }
+
+  writeExample(path) {
+    return new ExampleWriter(this.fontface)
+      .write(path);
   }
 
   writeCSS(path) {
@@ -67,7 +77,7 @@ class Writer {
   }
 
   makeFilename(path, extension) {
-    return Path.join(path, `${this.fontface.alias}.${extension}`);
+    return Path.join(path, 'css', `${this.fontface.alias}.${extension}`);
   }
 }
 
