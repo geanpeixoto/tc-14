@@ -1,10 +1,12 @@
 const fs = require('fs');
 const Path = require('path');
-const svgicons2svgfont = require('svgicons2svgfont');
-const svg2ttf = require('svg2ttf');
-const ttf2woff = require('ttf2woff');
-const ttf2woff2 = require('ttf2woff2');
-const ttf2eot = require('ttf2eot');
+
+const CSSWriter = require('./writers/css-writer');
+const SVGFontWriter = require('./writers/svgfont-writer');
+const TTFWriter = require('./writers/ttf-writer');
+const EOTWriter = require('./writers/eot-writer');
+const WOFFWriter = require('./writers/woff-writer');
+const WOFF2Writer = require('./writers/woff2-writer');
 
 class Writer {
 
@@ -17,99 +19,51 @@ class Writer {
       fs.mkdirSync(path);
     }
 
-    return this.writeSVG(path)
-      .then(svg => this.writeTTF(svg, path))
-      .then(ttf => Promise.all([
-        this.writeEOT(ttf, path),
-        this.writeWOFF(ttf, path),
-        this.writeWOFF2(ttf, path),
-        this.writeCSS(path),
-      ]));
+    const fonts = this.writeSVG(path)
+      .then(svg => this.writeTTF(path, svg))
+      .then((ttf) => {
+        const ttfa = new Uint8Array(ttf);
+        return Promise.all([
+          this.writeEOT(path, ttfa),
+          this.writeWOFF(path, ttfa),
+          this.writeWOFF2(path, ttf),
+        ]);
+      });
+
+    return Promise.all([
+      this.writeCSS(path),
+      fonts,
+    ]);
   }
 
   writeCSS(path) {
-    const template = fs.readFileSync(Path.join(__dirname, 'templates/style.css'), 'utf8');
-    const filename = this.makeFilename(path, 'css');
-    const css = template.replace(/\$\{([^\}]+)\}/g, (_, key) => this.fontface[key]);
-
-    return new Promise(resolve => fs.writeFile(filename, css, () => resolve()));
-  }
-
-  writeTTF(svg, path) {
-    const {
-      version,
-    } = this.fontface;
-
-    const filename = this.makeFilename(path, 'ttf');
-    const ttf = new Buffer(svg2ttf(svg, {
-      version,
-    }).buffer);
-
-    return new Promise(resolve => fs.writeFile(filename, ttf, () => resolve(ttf)));
-  }
-
-  writeWOFF(ttf, path) {
-    const filename = this.makeFilename(path, 'woff');
-    const woff = new Buffer(ttf2woff(new Uint8Array(ttf)).buffer);
-
-    return new Promise(resolve => fs.writeFile(filename, woff, () => resolve(ttf)));
-  }
-
-  writeEOT(ttf, path) {
-    const filename = this.makeFilename(path, 'eot');
-    const eot = new Buffer(ttf2eot(new Uint8Array(ttf)).buffer);
-
-    return new Promise(resolve => fs.writeFile(filename, eot, () => resolve(ttf)));
-  }
-
-  writeWOFF2(ttf, path) {
-    const filename = this.makeFilename(path, 'woff2');
-    const woff2 = ttf2woff2(ttf);
-
-    return new Promise(resolve => fs.writeFile(filename, woff2, () => resolve(ttf)));
+    return new CSSWriter(this.fontface)
+      .write(this.makeFilename(path, 'css'));
   }
 
   writeSVG(path) {
-    const {
-      fontface,
-    } = this;
+    return new SVGFontWriter(this.fontface)
+      .write(this.makeFilename(path, 'svg'));
+  }
 
-    const stream = svgicons2svgfont({
-      fontName: fontface.name,
-    });
+  writeTTF(path, svg) {
+    return new TTFWriter(this.fontface, svg)
+      .write(this.makeFilename(path, 'ttf'));
+  }
 
-    const filename = this.makeFilename(path, 'svg');
-    let svgfile = '';
+  writeEOT(path, ttf) {
+    return new EOTWriter(this.fontface, ttf)
+      .write(this.makeFilename(path, 'eot'));
+  }
 
-    stream.pipe(fs.createWriteStream(filename, {
-      flags: 'w',
-      defaultEncoding: 'utf8',
-    }));
+  writeWOFF(path, ttf) {
+    return new WOFFWriter(this.fontface, ttf)
+      .write(this.makeFilename(path, 'woff'));
+  }
 
-    const promise = new Promise((resolve, reject) => {
-      stream
-        .on('finish', () => resolve(svgfile))
-        .on('data', (data) => {
-          svgfile += data;
-        })
-        .on('error', err => reject(err));
-    });
-
-    fontface.glyphs.forEach(({
-      file,
-      name,
-      unicode,
-    }) => {
-      const glyph = fs.createReadStream(file);
-      glyph.metadata = {
-        name,
-        unicode,
-      };
-      stream.write(glyph);
-    });
-    stream.end();
-
-    return promise;
+  writeWOFF2(path, ttf) {
+    return new WOFF2Writer(this.fontface, ttf)
+      .write(this.makeFilename(path, 'woff2'));
   }
 
   makeFilename(path, extension) {
