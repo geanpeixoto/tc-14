@@ -1,5 +1,5 @@
 const ttf2woff = require('ttf2woff');
-const fs = require('fs');
+const fs = require('../utils/fs');
 
 class EOTWriter {
   constructor(fontface, ttf) {
@@ -9,7 +9,8 @@ class EOTWriter {
 
   write(filename) {
     const woff = new Buffer(ttf2woff(this.ttf).buffer);
-    return new Promise(resolve => fs.writeFile(filename, woff, () => resolve(woff)));
+    return fs.writeFile(filename, woff)
+      .then(() => woff);
   }
 }
 

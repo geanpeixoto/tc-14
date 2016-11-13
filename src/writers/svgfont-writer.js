@@ -1,5 +1,8 @@
 const svgicons2svgfont = require('svgicons2svgfont');
 const fs = require('fs');
+const path = require('path');
+
+const myfs = require('../utils/fs');
 
 class SVGFontWriter {
 
@@ -8,44 +11,46 @@ class SVGFontWriter {
   }
 
   write(filename) {
-    const stream = svgicons2svgfont({
-      fontName: this.fontface.name,
-    });
+    return myfs.mkdir(path.dirname(filename)).then(() => {
+      const stream = svgicons2svgfont({
+        fontName: this.fontface.name,
+      });
 
-    stream.pipe(fs.createWriteStream(filename, {
-      flags: 'w',
-      defaultEncoding: 'utf8',
-    }));
+      stream.pipe(fs.createWriteStream(filename, {
+        flags: 'w',
+        defaultEncoding: 'utf8',
+      }));
 
-    let svg = '';
+      let svg = '';
 
-    const promise = new Promise((resolve, reject) => {
-      stream
-        .on('data', (data) => {
-          svg += data;
-        })
-        .on('finish', () => {
-          resolve(svg);
-        })
-        .on('error', err => reject(err));
-    });
+      const promise = new Promise((resolve, reject) => {
+        stream
+          .on('data', (data) => {
+            svg += data;
+          })
+          .on('finish', () => {
+            resolve(svg);
+          })
+          .on('error', err => reject(err));
+      });
 
-    this.fontface.glyphs.forEach(({
-      file,
-      name,
-      unicode,
-    }) => {
-      const glyph = fs.createReadStream(file);
-      glyph.metadata = {
+      this.fontface.glyphs.forEach(({
+        file,
         name,
         unicode,
-      };
-      stream.write(glyph);
+      }) => {
+        const glyph = fs.createReadStream(file);
+        glyph.metadata = {
+          name,
+          unicode,
+        };
+        stream.write(glyph);
+      });
+
+      stream.end();
+
+      return promise;
     });
-
-    stream.end();
-
-    return promise;
   }
 }
 

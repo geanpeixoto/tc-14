@@ -1,5 +1,6 @@
-const fs = require('fs');
 const Path = require('path');
+
+const FontFace = require('./fontface');
 
 const CSSWriter = require('./writers/css-writer');
 const SVGFontWriter = require('./writers/svgfont-writer');
@@ -12,17 +13,10 @@ const ExampleWriter = require('./writers/example-writer');
 class Writer {
 
   constructor(fontface) {
-    this.fontface = fontface;
+    this.fontface = (fontface instanceof FontFace) ? fontface : new FontFace(fontface);
   }
 
   write(path) {
-    const cssfolder = `${path}/css`;
-    if (!fs.existsSync(path)) {
-      fs.mkdirSync(path);
-    } else if (!fs.existsSync(cssfolder)) {
-      fs.mkdirSync(cssfolder);
-    }
-
     const fonts = this.writeSVG(path)
       .then(svg => this.writeTTF(path, svg))
       .then((ttf) => {

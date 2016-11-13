@@ -45,7 +45,8 @@ class CSSWriter {
         'font-feature-settings': 'liga',
       },
     })
-    .then(data => fs.writeFile(filename, data));
+    .then(data => fs.writeFile(filename, data)
+      .then(() => data));
   }
 }
 

@@ -1,5 +1,5 @@
 const svg2ttf = require('svg2ttf');
-const fs = require('fs');
+const fs = require('../utils/fs');
 
 class TTFWriter {
 
@@ -17,7 +17,8 @@ class TTFWriter {
       version,
     }).buffer);
 
-    return new Promise(resolve => fs.writeFile(filename, ttf, () => resolve(ttf)));
+    return fs.writeFile(filename, ttf)
+      .then(() => ttf);
   }
 }
 
