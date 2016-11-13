@@ -1,16 +1,36 @@
 const postcss = require('postcss');
 const parser = require('postcss-js');
-const autoprefixer = require('autoprefixer');
+const cssnext = require('postcss-cssnext');
 
 const runner = postcss([
-  autoprefixer,
+  cssnext({
+    browsers: ['ie > 9'],
+  }),
 ]);
 
-function process(json) {
+function processJson(json) {
   return runner.process(json, {
     parser,
-  })
-  .then(result => result.css);
+  });
+}
+
+function processString(string) {
+  return runner.process(string);
+}
+
+function p(input) {
+  const t = typeof input;
+  switch (t) {
+    case 'string':
+      return processString(input);
+    default:
+      return processJson(input);
+  }
+}
+
+function process(input) {
+  return p(input)
+    .then(result => result.css);
 }
 
 module.exports = {

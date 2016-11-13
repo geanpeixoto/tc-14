@@ -1,9 +1,17 @@
 const gulp = require('gulp');
-const { templates } = require('../config');
+
 const run = require('./run');
 
+const {
+  reload,
+} = require('./preview');
+
+const {
+  src,
+} = require('../config');
+
 function watch() {
-  gulp.watch(templates, run);
+  gulp.watch(`${src}/**`, gulp.series(run, reload));
 }
 
 module.exports = watch;

@@ -5,29 +5,17 @@ glyphs:
   play:
     file: 'play-icon.svg'
     unicode: '\uE001'
-    groups: [
-      'actions'
-      'my-player'
-    ]
+    group: 'actions'
     description: 'starta a música'
   pause:
     file: 'pause-icon' # o '.svg' é opcional
-    groups: [
-      'actions',
-      'my-player'
-    ]
+    group: 'actions'
     description: '''
       A long description,
       over one line
     '''
   stop:
-    # caso [[file]] não seja informado, será assumido o valor <icon-name>.svg
-    groups: [
-      'actions',
-      'my-player'
-    ]
+    # caso [[file]] não seja  informado, será assumido o valor <icon-name>.svg
+    group: 'actions'
   replay:
-    groups: [
-      'actions',
-      'my-player'
-    ]
+    file: 'replay'

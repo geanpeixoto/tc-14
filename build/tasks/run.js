@@ -10,7 +10,8 @@ const {
 
 function run() {
   return new Writer(FontFace.load(example))
-    .write(dist);
+    .write(dist)
+    .catch(err => console.error(err));
 }
 
 module.exports = run;

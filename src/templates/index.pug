@@ -2,7 +2,33 @@ doctype html
 html
   head
     title #{name}
+    link(rel="stylesheet" href=`css/${alias}.css`)
+    style #{styles}
   body
-    header
-
-    main
+    header.tc-header
+      h1 #{alias}
+    main.tc-content
+      each group in groups
+        section.tc-list
+          h2 #{group}
+          ul
+            each glyph in glyphs
+              if glyph.group == group
+                li
+                  button.tc-glyph(data-name=`${glyph.name}` data-class=`${alias}`)
+                    i(class=`${alias} tc-icon`) #{glyph.name}
+                    | #{glyph.name}
+    footer.tc-detail
+      div.tc-detail__cloak
+      div.tc-detail__wrapper
+        header.tc-detail__header
+          div.tc-detail__title
+        section.tc-detail__content
+          section
+            h3 1º passo
+            p
+          section
+            h3 2º passo
+            pre
+              code.tc-detail__example
+    script(src="index.js" async)

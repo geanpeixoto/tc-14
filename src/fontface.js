@@ -2,6 +2,7 @@ const paths = require('path');
 const cson = require('./utils/cson');
 
 const VERSION_REGEXP = /^(\d+\.\d+)/g;
+const DEFAULT_GROUP = 'unknow';
 
 class FontFace {
   constructor({
@@ -15,6 +16,14 @@ class FontFace {
     this.alias = alias;
     this.version = version.match(VERSION_REGEXP)[0];
     this.glyphs = this.constructor.parseGlyphs(glyphs, path);
+    this.groups = this.getGroups();
+  }
+
+  getGroups() {
+    return Array.from(this.glyphs.reduce((set, glyph) => {
+      set.add(glyph.group);
+      return set;
+    }, new Set()));
   }
 
   static load(filename) {
@@ -41,7 +50,7 @@ class FontFace {
         name,
         unicode,
         file,
-        groups,
+        group = DEFAULT_GROUP,
         description,
       } = glyphs[glyph];
 
@@ -57,7 +66,7 @@ class FontFace {
         file: filename,
 
         unicode: [me].concat(unicode).filter(value => value),
-        groups,
+        group,
         description,
       };
     });
