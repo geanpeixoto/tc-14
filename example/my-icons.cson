@@ -1,21 +1,9 @@
 name: 'My Font'
 alias: 'my-font'
 path: './images/'
-glyphs:
-  play:
-    file: 'play-icon.svg'
-    unicode: '\uE001'
-    group: 'actions'
-    description: 'starta a música'
+glyphs: 
+  play: 
+    file: 'play'
+    group: 'group2'
   pause:
-    file: 'pause-icon' # o '.svg' é opcional
-    group: 'actions'
-    description: '''
-      A long description,
-      over one line
-    '''
-  stop:
-    # caso [[file]] não seja  informado, será assumido o valor <icon-name>.svg
-    group: 'actions'
-  replay:
-    file: 'replay'
+    group: 'group2'
