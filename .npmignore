@@ -1,0 +1,10 @@
+/build/
+/dist/
+/docs/
+/example/
+/spec/
+
+/.editorconfig
+/.eslintrc
+/gulpfile.js
+/jasmine-runner
