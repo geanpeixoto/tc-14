@@ -14,6 +14,9 @@ class SVGFontWriter {
     return myfs.mkdir(path.dirname(filename)).then(() => {
       const stream = svgicons2svgfont({
         fontName: this.fontface.name,
+        fontHeight: 150,
+        normalize: true,
+        // fixedWidth: false,
       });
 
       stream.pipe(fs.createWriteStream(filename, {
@@ -28,7 +31,7 @@ class SVGFontWriter {
           .on('data', (data) => {
             svg += data;
           })
-          .on('finish', () => {
+          .on('end', () => {
             resolve(svg);
           })
           .on('error', err => reject(err));
@@ -44,6 +47,7 @@ class SVGFontWriter {
           name,
           unicode,
         };
+
         stream.write(glyph);
       });
 

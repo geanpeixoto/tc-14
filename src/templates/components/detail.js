@@ -5,6 +5,7 @@ export default class DetailComponent {
     this.element = document.querySelector('.tc-detail');
     this.title = this.element.querySelector('.tc-detail__title');
     this.example = this.element.querySelector('.tc-detail__example');
+    this.closeHandler = this.element.querySelector('.tc-detail__close-handler button');
     this.bind();
   }
   bind() {
@@ -13,6 +14,9 @@ export default class DetailComponent {
         this.close();
       }
     });
+
+    this.closeHandler
+      .addEventListener('click', () => this.close());
 
     this.element.querySelector('.tc-detail__cloak')
       .addEventListener('click', () => this.close());

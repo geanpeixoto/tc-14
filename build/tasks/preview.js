@@ -4,10 +4,10 @@ const {
   dist,
 } = require('../config');
 
-function init() {
+function init(done) {
   browserSync.init({
     server: dist,
-  });
+  }, done);
 }
 
 function reload(done) {

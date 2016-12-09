@@ -13,7 +13,7 @@ class TTFWriter {
       version,
     } = this.fontface;
 
-    const ttf = new Buffer(svg2ttf(this.svg, {
+    const ttf = Buffer.from(svg2ttf(this.svg, {
       version,
     }).buffer);
 

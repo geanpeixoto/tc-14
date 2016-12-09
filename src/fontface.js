@@ -55,13 +55,13 @@ class FontFace {
     const glyphs = args[0];
     args.slice(1)
       .filter(item => !!item)
-      .forEach(arg => {
+      .forEach((arg) => {
         Object.keys(arg)
-          .forEach(name => {
+          .forEach((name) => {
             const glyph = arg[name];
             const current = glyphs[name];
 
-            if ( !current ) {
+            if (!current) {
               glyphs[name] = glyph;
             } else {
               Object.assign(current, glyph);
@@ -78,11 +78,11 @@ class FontFace {
         fs.readdirSync(paths.join(path, dir))
           .filter(file => file.match(SVG_REGEP))
           .map(file => file.replace(SVG_REGEP, ''))
-          .forEach(glyph => {
+          .forEach((glyph) => {
             glyphs[glyph] = {
               file: `${dir}/${glyph}.svg`,
-              group: dir
-            }
+              group: dir,
+            };
           });
 
         return glyphs;
@@ -108,7 +108,7 @@ class FontFace {
         }
 
         return {
-          name: me,
+          name: me.toLowerCase(),
           file: filename,
 
           unicode: [me].concat(unicode).filter(value => value),

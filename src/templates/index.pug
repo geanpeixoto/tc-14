@@ -17,12 +17,14 @@ html
                 li
                   button.tc-glyph(data-name=`${glyph.name}` data-class=`${alias}`)
                     i(class=`${alias} tc-icon`) #{glyph.name}
-                    | #{glyph.name}
+                    | !{glyph.name.replace(/([\-\_])/g, match => `<wbr/>${match}<wbr/>` )}
     footer.tc-detail
       div.tc-detail__cloak
       div.tc-detail__wrapper
         header.tc-detail__header
           div.tc-detail__title
+          div.tc-detail__close-handler 
+            button &times;
         section.tc-detail__content
           section
             h3 1º passo

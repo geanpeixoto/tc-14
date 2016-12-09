@@ -8,7 +8,7 @@ class EOTWriter {
   }
 
   write(filename) {
-    const woff = new Buffer(ttf2woff(this.ttf).buffer);
+    const woff = Buffer.from(ttf2woff(this.ttf).buffer);
     return fs.writeFile(filename, woff)
       .then(() => woff);
   }

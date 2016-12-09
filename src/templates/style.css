@@ -1,9 +1,9 @@
 :root {
   --colorPrimary: #4d7498;
   --colorWhite: #FFFFFFF0;
-  --colorBlack: #212121;
-  --colorGlyph: #9e9e9e;
-  --headerHeight: 56px;
+  --colorBlack: #666666;
+  --colorGlyph: #666666;
+  --headerHeight: 48px;
 }
 
 html, body {
@@ -13,6 +13,9 @@ html, body {
 
 button {
   font-size: inherit;
+  will-change: background-color;
+  transition: background-color .1s ease-in;
+  cursor: pointer;
 }
 
 * {
@@ -22,6 +25,7 @@ button {
 body {
   font-family: 'Open Sans', 'Tahoma', sans-serif;
   font-size: 16px;
+  color: var(--colorBlack);
 }
 
 .tc {
@@ -39,6 +43,7 @@ body {
     vertical-align: middle;
     & h1 {
       margin: 0;
+      font-size: 1.5em;
     }
   }
   &-content {
@@ -48,7 +53,7 @@ body {
     padding: 16px;
   }
   &-list {
-    margin: 16px 0;
+    margin: 32px 0;
 
     & ul {
       list-style: none;
@@ -65,13 +70,15 @@ body {
 
     & h2 {
       margin: 8px;
+      font-size: 1.2em;
       color: var(--colorPrimary);
       text-transform: uppercase;
     }
   }
   &-glyph {
     cursor: pointer;
-    min-width: 86px;
+    width: 128px;
+    height: 100%;
     background: none;
     margin: none;
     outline: none;
@@ -79,12 +86,11 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 8px;
+    padding: 16px 8px;
     border-radius: 2px;
-    will-change: background-color;
-    transition: background-color .1s ease-in;
     color: var(--colorGlyph);
-    font-size: .8em;
+    font-size: .75em;
+    line-height: 1.5em;
     &:disabled {
       color: color(var(--colorBlack) alpha(26%))
     }
@@ -97,7 +103,7 @@ body {
       }
     }
     & .tc-icon {
-      font-size: 48px;
+      font-size: 36px;
       margin-bottom: 8px;
     }
     &.is-selected {
@@ -132,34 +138,66 @@ body {
       will-change: transform;
       transition: transform .2s ease-in;
       background: var(--colorWhite);
+      border-radius: 2px 2px 0 0;
+      overflow: hidden;
     }
 
     &__header {
+      display: flex;
+      align-items: center;
+      flex-direction: row;
       background-color: var(--colorPrimary);
       color: var(--colorWhite);
     }
 
     &__title {
-      padding: 8px 16px;
+      padding: 8px 32px;
+      flex: 1 1 auto;
       display: flex;
       align-items: center;
       flex-direction: row;
-      font-size: 24px;
+      font-size: 1em;
+      font-weight: 600;
       & .tc-icon {
-        font-size: 36px;
+        font-size: 28px;
         margin-right: 8px;
+      }
+    }
+    
+    &__close-handler button {
+      width: 40px;
+      height: 40px;
+      font-size: 22px;
+      vertical-align: middle;
+      margin: 0 16px;
+      background: none;
+      border: 0;
+      outline: none;
+      color: inherit;
+      border-radius: 50%;
+
+      &:hover, &:focus {
+        background: #9999991F;
+      }
+
+      &:active {
+        background: #9999993F;
       }
     }
 
     &__content {
       display: flex;
       flex-direction: row;
-      padding: 8px;
-      & pre, & h3 {
+      padding: 16px 32px 24px 32px;
+      & h3 {
+        font-size: 1.1em;
+      }
+      & h3, & pre {
+        margin: 0.5em 0;
       }
       & section {
         flex: 1 1 50%;
-        padding: 8px;
+        padding: 0 8px;
       }
     }
 
