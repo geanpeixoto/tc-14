@@ -16,7 +16,8 @@ class Writer {
     this.fontface = (fontface instanceof FontFace) ? fontface : new FontFace(fontface);
   }
 
-  write(path) {
+  write(p) {
+    const path = Path.join(process.cwd(), p);
     const fonts = this.writeSVG(path)
       .then(svg => this.writeTTF(path, svg))
       .then((ttf) => {
