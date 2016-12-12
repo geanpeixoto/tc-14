@@ -43,9 +43,11 @@ class FontFace {
 
     if (!data.version) {
       console.warn(`[WARNING] considere inserir {version} em sua fonte: ${filename}`);
+    } else {
+      data.version = data.version.match(/\d+\.\d+/g)[0];
     }
 
-    const path = data.path = paths.join(base, data.path);
+    const path = data.path = paths.join(base || '.', data.path || '.');
     data.glyphs = this.mergeGlyphs(this.loadGlyphs(path), data.glyphs);
 
     return new this(data);

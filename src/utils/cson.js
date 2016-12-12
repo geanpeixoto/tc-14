@@ -4,7 +4,11 @@ const EXTENSION_REGEXP = /\.cson$/g;
 
 function load(file) {
   const filename = !file.match(EXTENSION_REGEXP) ? `${file}.cson` : file;
-  return cson.parseCSONFile(filename);
+  const r = cson.parseCSONFile(filename);
+  if (r instanceof Error) {
+    throw r;
+  }
+  return r;
 }
 
 module.exports = {

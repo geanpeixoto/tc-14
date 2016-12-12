@@ -18,7 +18,7 @@ export default class DetailComponent {
     this.closeHandler
       .addEventListener('click', () => this.close());
 
-    this.element.querySelector('.tc-detail__cloak')
+    this.element.querySelector('.tc-cloak')
       .addEventListener('click', () => this.close());
   }
 
@@ -35,7 +35,7 @@ export default class DetailComponent {
   }
 
   close() {
-    Promise.resolve()
+    return Promise.resolve()
       .then(() => this.element.classList.remove('is-open'));
   }
 

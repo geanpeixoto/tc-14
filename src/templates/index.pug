@@ -3,13 +3,24 @@ html
   head
     title #{name}
     link(rel="stylesheet" href=`css/${alias}.css`)
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1.0")
     style #{styles}
-  body
+  body(class="tc")
     header.tc-header
-      h1 #{alias}
+      div.tc-cloak
+      section.tc-header__wrapper
+        section.tc-header__content
+          div.tc-header__menu-handler
+            span
+          h1 #{alias}
+        ul.tc-header__menu
+          each group in groups
+            li.tc-header__menu-item
+              a(href=`#${group.replace(/\s+/g, '')}`) #{group}
     main.tc-content
       each group in groups
-        section.tc-list
+        section.tc-list(id=`${group.replace(/\s+/g, '')}`)
           h2 #{group}
           ul
             each glyph in glyphs
@@ -19,7 +30,7 @@ html
                     i(class=`${alias} tc-icon`) #{glyph.name}
                     | !{glyph.name.replace(/([\-\_])/g, match => `<wbr/>${match}<wbr/>` )}
     footer.tc-detail
-      div.tc-detail__cloak
+      div.tc-cloak
       div.tc-detail__wrapper
         header.tc-detail__header
           div.tc-detail__title

@@ -1,9 +1,4 @@
 name: 'My Font'
 alias: 'my-font'
-path: './images/'
-glyphs: 
-  play: 
-    file: 'play'
-    group: 'group2'
-  pause:
-    group: 'group2'
+path: './images/a_font-hosp'
+version: '2.0.0'
