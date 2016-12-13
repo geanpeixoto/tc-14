@@ -43,6 +43,22 @@ class CSSWriter {
         '-moz-osx-font-smoothing': 'grayscale',
         'text-rendering': 'optimizeLegibility',
         'font-feature-settings': 'liga',
+        overflow: 'hidden',
+      },
+      [`.${alias}.dp24`]: {
+        'font-size': '24px',
+        width: '24px',
+        height: '24px',
+      },
+      [`.${alias}.dp36`]: {
+        'font-size': '36px',
+        width: '36px',
+        height: '36px',
+      },
+      [`.${alias}.dp48`]: {
+        'font-size': '48px',
+        width: '48px',
+        height: '48px',
       },
     })
     .then(data => fs.writeFile(filename, data)

@@ -10,7 +10,7 @@ const NAME_ATTRIBUTE = 'data-name';
 const CLASS_ATTRIBUTE = 'data-class';
 
 function parseHash(hash) {
-  return hash.match(/([^#]+)$/g)[0];
+  return hash ? hash.match(/([^#]+)$/g)[0] : '';
 }
 
 function throttle(callback, limit = 0) {

@@ -54,11 +54,12 @@ export default class HeaderComponent {
 
   select(group) {
     const old = this.element.querySelector(`a.${SELECTED_CLASS}`);
+
     if (old) {
       old.classList.remove(SELECTED_CLASS);
     }
 
-    const handler = this.element.querySelector(`a[href="#${group}"]`);
+    const handler = this.element.querySelector(`a[href="#${group}"]`) || this.element.querySelector('a:first-child');
     handler.classList.add(SELECTED_CLASS);
   }
 

@@ -307,8 +307,7 @@ body.is-scrolled .tc-content__upper-handler {
         background-color: #9999993F
       }
     }
-    & .tc-icon {
-      font-size: 36px;
+    & i {
       margin-bottom: 8px;
     }
     &.is-selected {
