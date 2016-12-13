@@ -1,9 +1,9 @@
 const pug = require('pug');
 
-function process(source, context = {}, options = {
+function process(file, context = {}, options = {
   pretty: true,
 }) {
-  return Promise.resolve(pug.compile(source, options)(context));
+  return Promise.resolve(pug.compileFile(file, options)(context));
 }
 
 module.exports = {

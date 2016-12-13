@@ -3,7 +3,9 @@ import HeaderComponent from './header';
 
 const ITEM_SELECTOR = '.tc-glyph';
 const LIST_SELECTOR = '.tc-list';
+const UPPERHANDLER_SELECTOR = '.tc-content__upper-handler';
 const SELECTED_CLASS = 'is-selected';
+const SCROLLED_CLASS = 'is-scrolled';
 const NAME_ATTRIBUTE = 'data-name';
 const CLASS_ATTRIBUTE = 'data-class';
 
@@ -62,6 +64,10 @@ export default class PreviewComponent {
       }
     });
 
+    document.querySelector(UPPERHANDLER_SELECTOR).addEventListener('click', () => {
+      document.scrollingElement.scrollTop = 0;
+    });
+
     window.addEventListener('hashchange', ({ newURL }) => this.headerComponent.select(parseHash(newURL)));
     window.addEventListener('scroll', throttle(event => this.onScroll(event), 200));
     window.addEventListener('scroll', debounce(event => this.onScroll(event), 200));
@@ -109,6 +115,12 @@ export default class PreviewComponent {
 
   onScroll(event) {
     const scrollTop = event.target.scrollingElement.scrollTop;
+
+    if (scrollTop > 200) {
+      document.body.classList.add(SCROLLED_CLASS);
+    } else {
+      document.body.classList.remove(SCROLLED_CLASS);
+    }
 
     const current = Array.from(this.lists)
       .filter(({ offsetTop }) => offsetTop - scrollTop < 1)

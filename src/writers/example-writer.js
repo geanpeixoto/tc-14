@@ -42,10 +42,12 @@ class ExampleWriter {
   }
 
   writeIndex(dest, styles) {
-    return myfs.readFile(path.join(__dirname, '../templates/index.pug'))
-      .then(index => pug.process(index, Object.assign({
-        styles,
-      }, this.fontface)))
+    return pug.process(path.join(__dirname, '../templates/index.pug'), Object.assign({
+      filename: 'index.pug',
+      styles,
+      doctype: 'html',
+      basedir: path.join(__dirname, '../templates'),
+    }, this.fontface))
       .then(data => myfs.writeFile(path.join(dest, 'index.html'), data));
   }
 }

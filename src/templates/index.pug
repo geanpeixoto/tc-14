@@ -11,9 +11,9 @@ html
       div.tc-cloak
       section.tc-header__wrapper
         section.tc-header__content
-          div.tc-header__menu-handler
+          button.tc-header__menu-handler
             span
-          h1 #{alias}
+          h1 #{name}
         ul.tc-header__menu
           each group in groups
             li.tc-header__menu-item
@@ -29,6 +29,10 @@ html
                   button.tc-glyph(data-name=`${glyph.name}` data-class=`${alias}`)
                     i(class=`${alias} tc-icon`) #{glyph.name}
                     | !{glyph.name.replace(/([\-\_])/g, match => `<wbr/>${match}<wbr/>` )}
+      .tc-content__upper-handler
+        button
+          include ./upper.svg
+          
     footer.tc-detail
       div.tc-cloak
       div.tc-detail__wrapper
