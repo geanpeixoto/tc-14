@@ -9,6 +9,7 @@ const EOTWriter = require('./writers/eot-writer');
 const WOFFWriter = require('./writers/woff-writer');
 const WOFF2Writer = require('./writers/woff2-writer');
 const ExampleWriter = require('./writers/example-writer');
+const OldCSSWriter = require('./writers/oldcss-writer');
 
 class Writer {
 
@@ -31,6 +32,7 @@ class Writer {
 
     return Promise.all([
       this.writeCSS(path),
+      this.writeOldCSS(path),
       this.writeExample(path),
       fonts,
     ]);
@@ -39,6 +41,11 @@ class Writer {
   writeExample(path) {
     return new ExampleWriter(this.fontface)
       .write(path);
+  }
+
+  writeOldCSS(path) {
+    return new OldCSSWriter(this.fontface)
+      .write(Path.join(path, 'css', `${this.fontface.alias}.old.css`));
   }
 
   writeCSS(path) {
