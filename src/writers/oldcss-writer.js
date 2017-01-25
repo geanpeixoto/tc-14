@@ -24,7 +24,7 @@ class OldCSSWriter {
     }, {});
 
     function makeClass(append = '') {
-      return `[class^="${alias}-"]${append}:before, [class*=" ${alias}-"]${append}:before`;
+      return `[class^="${alias}-"]${append}, [class*=" ${alias}-"]${append}`;
     }
 
     return postcss.process(Object.assign({
