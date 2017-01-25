@@ -28,6 +28,7 @@ class CSSWriter {
         ],
       },
       [`.${alias}`]: {
+        'vertical-align': 'middle',
         'font-family': name,
         'font-weight': 'normal',
         'font-style': 'normal',

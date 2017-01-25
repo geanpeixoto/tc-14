@@ -42,6 +42,7 @@ class OldCSSWriter {
         ],
       },
       [makeClass()]: {
+        'vertical-align': 'middle',
         'font-family': name,
         'font-weight': 'normal',
         'font-style': 'normal',
