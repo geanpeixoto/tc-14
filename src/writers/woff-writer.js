@@ -1,17 +1,10 @@
 const ttf2woff = require('ttf2woff');
-const fs = require('../utils/fs');
+const { writeFile } = require('../utils/file-manager');
 
-class EOTWriter {
-  constructor(fontface, ttf) {
-    this.fontface = fontface;
-    this.ttf = ttf;
-  }
-
-  write(filename) {
-    const woff = Buffer.from(ttf2woff(this.ttf).buffer);
-    return fs.writeFile(filename, woff)
-      .then(() => woff);
-  }
+async function write(ttf, filename) {
+  const woff = Buffer.from(ttf2woff(ttf).buffer);
+  await writeFile(filename, woff);
+  return woff;
 }
 
-module.exports = EOTWriter;
+module.exports = write;

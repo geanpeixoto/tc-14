@@ -1,61 +1,69 @@
-const svgicons2svgfont = require('svgicons2svgfont');
 const fs = require('fs');
-const path = require('path');
+const svgicons2svgfont = require('svgicons2svgfont');
+const { mkdir, dirname } = require('../utils/file-manager');
 
-const myfs = require('../utils/fs');
+function makeSvgStream(font, filename) {
+  const warns = new Set();
 
-class SVGFontWriter {
+  const output = svgicons2svgfont({
+    fontName: font.name,
+    fontHeight: 150,
+    normalize: true,
+    // fixedWidth: false,
+    log: (message) => {
+      if (message !== 'Font created') {
+        warns.add(message);
+      }
+    },
+  });
 
-  constructor(fontface) {
-    this.fontface = fontface;
-  }
+  output.pipe(fs.createWriteStream(filename, {
+    flags: 'w',
+    defaultEncoding: 'utf8',
+  }));
 
-  write(filename) {
-    return myfs.mkdir(path.dirname(filename)).then(() => {
-      const stream = svgicons2svgfont({
-        fontName: this.fontface.name,
-        fontHeight: 150,
-        normalize: true,
-        // fixedWidth: false,
-      });
+  output.on('end', () => warns.size && console.log(Array.from(warns).join('\n')));
 
-      stream.pipe(fs.createWriteStream(filename, {
-        flags: 'w',
-        defaultEncoding: 'utf8',
-      }));
-
-      let svg = '';
-
-      const promise = new Promise((resolve, reject) => {
-        stream
-          .on('data', (data) => {
-            svg += data;
-          })
-          .on('end', () => {
-            resolve(svg);
-          })
-          .on('error', err => reject(err));
-      });
-
-      this.fontface.glyphs.forEach(({
-        file,
-        name,
-        unicode,
-      }) => {
-        const glyph = fs.createReadStream(file);
-        glyph.metadata = {
-          name,
-          unicode,
-        };
-
-        stream.write(glyph);
-      });
-
-      stream.end();
-
-      return promise;
-    });
-  }
+  return output;
 }
 
-module.exports = SVGFontWriter;
+function makeIconStream({ file, name, unicode }) {
+  const icon = fs.createReadStream(file);
+  icon.metadata = {
+    name,
+    unicode,
+  };
+  return icon;
+}
+
+function writeIcons(stream, font) {
+  font.groups.forEach((group) => {
+    group.icons
+      .map(icon => makeIconStream(icon))
+      .forEach(iconStream => stream.write(iconStream));
+  });
+}
+
+function $writeSvgFont(font, filename) {
+  return new Promise((resolve, reject) => {
+    const svgStream = makeSvgStream(font, filename);
+    let svg = '';
+
+    svgStream
+      .on('data', (append) => {
+        svg += append;
+      })
+      .on('end', () => resolve(svg))
+      .on('error', err => reject(err));
+
+    writeIcons(svgStream, font);
+    svgStream.end();
+  });
+}
+
+async function write(font, filename) {
+  await mkdir(dirname(filename));
+  return await $writeSvgFont(font, filename);
+}
+
+module.exports = write;

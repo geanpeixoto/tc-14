@@ -1,25 +1,10 @@
 const svg2ttf = require('svg2ttf');
-const fs = require('../utils/fs');
+const { writeFile } = require('../utils/file-manager');
 
-class TTFWriter {
-
-  constructor(fontface, svg) {
-    this.fontface = fontface;
-    this.svg = svg;
-  }
-
-  write(filename) {
-    const {
-      version,
-    } = this.fontface;
-
-    const ttf = Buffer.from(svg2ttf(this.svg, {
-      version,
-    }).buffer);
-
-    return fs.writeFile(filename, ttf)
-      .then(() => ttf);
-  }
+async function write(svg, filename) {
+  const ttf = Buffer.from(svg2ttf(svg).buffer);
+  await writeFile(filename, ttf);
+  return ttf;
 }
 
-module.exports = TTFWriter;
+module.exports = write;

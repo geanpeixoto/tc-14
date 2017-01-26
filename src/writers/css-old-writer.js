@@ -1,6 +1,12 @@
 const { writeFile } = require('../utils/file-manager');
 
-function template({ name, alias }) {
+function template({ name, alias, groups }) {
+  const icons = groups
+    .map(group => group.icons)
+    .reduce((prev, current) => prev.concat(current))
+    .map(icon => `.${alias}-${icon.name}:before { content: '${icon.unicode[0]}' }`)
+    .join('\n');
+
   return `
 @font-face {
   font-family: ${name};
@@ -10,7 +16,8 @@ function template({ name, alias }) {
     url('${alias}.ttf')  format('truetype');
 }
 
-.${alias} {
+[class^="${alias}-"],
+[class*=" ${alias}-"] {
   font-family: ${name};
   font-weight: normal;
   font-style: normal;
@@ -29,28 +36,34 @@ function template({ name, alias }) {
   overflow: hidden;
 }
 
-.${alias}.dp24 {
+[class^="${alias}-"].dp24,
+[class*=" ${alias}-"].dp24 {
   font-size: 24px;
   width: 24px;
   height: 24px;
 }
 
-.${alias}.dp36 {
+[class^="${alias}-"].dp36,
+[class*=" ${alias}-"].dp36 {
   font-size: 36px;
   width: 36px;
   height: 36px;
 }
 
-.${alias}.dp48 {
+[class^="${alias}-"].dp48,
+[class*=" ${alias}-"].dp48 {
   font-size: 48px;
   width: 48px;
   height: 48px;
 }
 
-.${alias}.inline {
+[class^="${alias}-"].inline,
+[class*=" ${alias}-"].inline {
   transform: translateY(-.1em);
 }
-`
+
+${icons}
+`;
 }
 
 async function write(font, filename) {
