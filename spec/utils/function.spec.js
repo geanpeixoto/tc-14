@@ -2,7 +2,6 @@ const { promisefy } = require('../../src/utils/function');
 
 describe('# function', () => {
   describe('## promisefy', () => {
-
     it('espera-se que o método seja executado', (done) => {
       promisefy(() => done())();
     });
@@ -31,7 +30,7 @@ describe('# function', () => {
 
     it('espera-se que o `catch` seja executado', (done) => {
       promisefy(callback => callback(new Error('error')))()
-        .catch(err => {
+        .catch((err) => {
           expect(err).toBeDefined();
           done();
         });
@@ -50,7 +49,7 @@ describe('# function', () => {
     it('espera-se que o `argument` do callback seja mantido', (done) => {
       const response = 'response';
       promisefy(callback => callback(null, response))()
-        .then(r => {
+        .then((r) => {
           expect(r).toEqual(response);
           done();
         });
@@ -59,7 +58,7 @@ describe('# function', () => {
     it('espera-se que os `arguments` do callback sejam mantidos', (done) => {
       const response = ['1', '2'];
       promisefy(callback => callback.apply(this, [null, ...response]))()
-        .then(r => {
+        .then((r) => {
           expect(r).toEqual(response);
           done();
         })
