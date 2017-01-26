@@ -42,12 +42,11 @@ class OldCSSWriter {
         ],
       },
       [makeClass()]: {
-        'vertical-align': 'middle',
         'font-family': name,
         'font-weight': 'normal',
         'font-style': 'normal',
         display: 'inline-block',
-        'line-height': '100%',
+        'line-height': 1,
         'text-transform': 'none',
         'letter-spacing': 'normal',
         'word-wrap': 'normal',
