@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "commander": "^2.9.0",
     "mkpath": "^1.0.0",
     "svg2ttf": "^4.0.2",
     "svgicons2svgfont": "^5.0.0",
@@ -19,8 +20,10 @@
     "jasmine-spec-reporter": "^2.7.0"
   },
   "scripts": {
-    "test": "node --harmony-async-await jasmine-runner.js"
+    "test": "node --harmony-async-await jasmine-runner.js",
+    "example": "node --harmony-async-await cli.js spec/support example"
   },
+  "bin": "cli.js",
   "author": "",
   "license": "ISC"
 }

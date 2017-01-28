@@ -1,56 +1,49 @@
 const { writeFile } = require('../utils/file-manager');
 
-function template({ name, alias }) {
+function template({ name, alias }, options = {}) {
+  const {
+    makeClass = (append = '') => `.${alias}${append}`,
+    src = `url('${alias}.ttf') format('truetype'), url('${alias}.woff') format('woff')`,
+  } = options;
+
   return `
 @font-face {
-  font-family: ${name};
+  font-family: '${name}';
   font-style: normal;
   font-weight: 400;
-  src: url('${alias}.woff') format('woff'),
-    url('${alias}.ttf')  format('truetype');
+  src: ${src};
 }
 
-.${alias} {
-  font-family: ${name};
-  font-weight: normal;
+${makeClass()} {
+  font-family: '${name}';
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "liga" 1;
   font-style: normal;
-  display: inline-block;
-  vertical-align: middle;
-  line-height: 1;
   text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
+  line-height: 1;
+  display: inline-block;
+  overflow: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-rendering: optimizeLegibility;
-  font-feature-settings: liga;
-  overflow: hidden;
 }
 
-.${alias}.dp24 {
+${makeClass('.dp24')} {
   font-size: 24px;
   width: 24px;
   height: 24px;
 }
 
-.${alias}.dp36 {
+${makeClass('.dp36')} {
   font-size: 36px;
   width: 36px;
   height: 36px;
 }
 
-.${alias}.dp48 {
+${makeClass('.dp48')} {
   font-size: 48px;
   width: 48px;
   height: 48px;
-}
-
-.${alias}.inline {
-  transform: translateY(-.1em);
-}
-`
+}`;
 }
 
 async function write(font, filename) {
@@ -58,5 +51,7 @@ async function write(font, filename) {
   await writeFile(filename, data);
   return data;
 }
+
+write.template = template;
 
 module.exports = write;

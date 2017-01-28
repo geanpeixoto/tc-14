@@ -3,15 +3,17 @@ const writeTTF = require('./writers/ttf-writer');
 const writeWOFF = require('./writers/woff-writer');
 const writeCSS = require('./writers/css-writer');
 const writeOCSS = require('./writers/css-old-writer');
+const writeMCSS = require('./writers/css-inline-writer');
 const writeJSON = require('./writers/json-writer');
 const { join } = require('./utils/file-manager');
 
 async function write(font, dest) {
   const svg = await writeSVGF(font, join(dest, `${font.alias}.svg`));
   const ttf = await writeTTF(svg, join(dest, `${font.alias}.ttf`));
-  await writeWOFF(ttf, join(dest, `${font.alias}.woff`));
+  const woff = await writeWOFF(ttf, join(dest, `${font.alias}.woff`));
   await writeCSS(font, join(dest, `${font.alias}.css`));
   await writeOCSS(font, join(dest, `${font.alias}.old.css`));
+  await writeMCSS(font, woff, join(dest, `${font.alias}.inline.css`));
   await writeJSON(font, join(dest, `${font.alias}.json`));
 }
 
