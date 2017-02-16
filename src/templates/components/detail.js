@@ -5,6 +5,7 @@ export default class DetailComponent {
     this.element = document.querySelector('.tc-detail');
     this.title = this.element.querySelector('.tc-detail__title');
     this.example = this.element.querySelector('.tc-detail__example');
+    this.exampleOld = this.element.querySelector('.tc-detail__example-old');
     this.closeHandler = this.element.querySelector('.tc-detail__close-handler button');
     this.bind();
   }
@@ -22,14 +23,12 @@ export default class DetailComponent {
       .addEventListener('click', () => this.close());
   }
 
-  open({
-    name,
-    font,
-  }) {
+  open({ name, font }) {
     Promise.resolve()
       .then(() => {
         this.title.innerHTML = `<i class="${font} tc-icon">${name}</i> ${name}`;
         this.example.innerText = `<i class="${font}">${name}</i>`;
+        this.exampleOld.innerText = `<i class="${font}-${name}"></i>`;
         this.element.classList.add('is-open');
       });
   }
