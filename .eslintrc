@@ -6,6 +6,6 @@
       "optionalDependencies": false,
       "peerDependencies": false,
     }],
-    "no-console": ["error", { allow: ["warn", "error"] }]
+    "no-console": ["error", { "allow": ["warn", "error"] }]
   }
 }

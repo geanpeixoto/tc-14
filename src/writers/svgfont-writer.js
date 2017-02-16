@@ -12,11 +12,18 @@ class SVGFontWriter {
 
   write(filename) {
     return myfs.mkdir(path.dirname(filename)).then(() => {
+      const warns = new Set();
+
       const stream = svgicons2svgfont({
         fontName: this.fontface.name,
         fontHeight: 150,
         normalize: true,
         // fixedWidth: false,
+        log: (message) => {
+          if (message !== 'Font created') {
+            warns.add(message);
+          }
+        },
       });
 
       stream.pipe(fs.createWriteStream(filename, {
@@ -32,7 +39,10 @@ class SVGFontWriter {
             svg += data;
           })
           .on('end', () => {
-            resolve(svg);
+            if (warns.size) {
+              console.warn(Array.from(warns).join('\n'));
+            }
+            return resolve(svg);
           })
           .on('error', err => reject(err));
       });
