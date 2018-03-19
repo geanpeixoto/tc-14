@@ -60,9 +60,9 @@ ${makeClass('.dp36')} {
 }
 
 ${makeClass('.dp48')} {
-  font-size: 48px,
-  width: 48px,
-  height: 48px,
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
 }
 
 ${icons}
