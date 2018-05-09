@@ -1,4 +1,4 @@
 name: 'My Font'
 alias: 'my-font'
-path: './images/a_font-hosp'
+path: './images'
 version: '2.0.0'

@@ -113,7 +113,7 @@ class FontFace {
           name: me.toLowerCase(),
           file: filename,
 
-          unicode: [me].concat(unicode).filter(value => value),
+          unicode: Array.from(new Set([me, me.replace(/_/g, '')].concat(unicode).filter(value => value))),
           group,
           description,
         };
